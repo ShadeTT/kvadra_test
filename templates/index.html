@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+
+<form action="{% url 'app:uploadText' %}" class="data" id="id_form_data">
+    <div class="form-group">
+        <label for="exampleTextarea">Строка</label>
+        <textarea name="fdata" class="form-control" id="id_fdata" cols="30" rows="10"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Отправить</button>
+</form>
+
+<br/>
+<a href="{% url 'app:list' %}">Смотреть список</a>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="{% static 'js/csrf.js' %}"></script>
+<script type="application/javascript">
+    $('#id_form_data').submit(function (e) {
+
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: "POST",
+            data: JSON.stringify({"data": {"fdata": $('textarea[name=fdata]').val()}}),
+            contentType: "application/json; charset=utf-8",
+            dataType: "text",
+            success: function (response) {
+                $('textarea').val('')
+            }
+        })
+    })
+
+</script>
+
+</body>
+</html>
